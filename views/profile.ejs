@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Code Camp Poll site: Login</title>
+
+<!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h1>Profile for <%= UserName %></h1>
+    </div>
+  </div>
+  <div class="row">
+ 	
+ 	<div class="col-md-8 col-md-offset-2">
+ 		<p class><a href="/polls/new">Create a new poll</a></p>
+		<p class ="display-1">My Polls</p>
+		<ul>
+        <% polls.forEach(function(poll){  %>
+        	<li>
+				<a href="/polls/view/<%= poll._id %> "><%= poll.name %></a> <a href="share/testURL">Share this Poll!</a> <a href="polls/delete/testURL">DELETE this Poll!</a>
+			</li>
+
+        <% }) %>
+			<li>
+				<a href="testURL">Test2</a> <a href="share/testURL">Share this Poll!</a> <a href="polls/delete/testURL">DELETE this Poll!</a>
+			</li>
+			<li>
+				<a href="testURL">Test2</a> <a href="share/testURL">Share this Poll!</a> <a href="polls/delete/testURL">DELETE this Poll!</a>
+			</li>
+		</ul>
+
+  </div>
+  <hr>
+	</div></div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-1.11.3.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
