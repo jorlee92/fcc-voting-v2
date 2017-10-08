@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Free Code Camp Poll site: Login</title>
+<title>Free Code Camp Poll site: Create Poll</title>
 
 <!-- Bootstrap -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -14,29 +14,28 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <h1>Profile for <%= UserName %></h1>
+      <h1><%= poll.name %> </%></h1>
+      
     </div>
   </div>
   <div class="row">
  	
- 	<div class="col-md-8 col-md-offset-2">
- 		<p class><a href="/polls/new">Create a new poll</a></p>
-		<p class ="display-1">My Polls</p>
-		<ul>
-        <% polls.forEach(function(poll){  %>
-        	<li>
-				<a href="/polls/view/<%= poll._id %> "><%= poll.name %></a> <a href="share/testURL">Share this Poll!</a> <a href="polls/delete/<%= poll._id %>">DELETE this Poll!</a>
-			</li>
-
-        <% }) %>
-		</ul>
-
-  </div>
+ 	<div class="col-md-8">
+ 	<ul>
+ 		<% options.forEach(function(option){
+		   <li>
+		   	<%= option.name %>: <a href="/poll/vote/<%= poll._id %>/option._id"><button>Vote!</button></a>
+		   </li>
+ 		<% }); %> 
+ 	</ul>
+ 	</div>
+ 	<div class="col-md-4">
+ 		Graph will go here
+ 	</div>
   <hr>
 	</div></div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+<script src="js/jquery-1.11.3.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed --> 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

@@ -14,21 +14,73 @@ router.get('/view/:id', function(req, res){
             res.send("Could not find Poll!")
         }
         else{
-            res.send(result);
+            if(req.isAuthenticated()){
+                //If the user is logged in show a version of the page that has a field to add an option
+                res.render('../views/viewpoll_auth.ejs', {poll: result});
+            }
+            else{
+            res.render('../views/viewpoll.ejs', {poll: result});
+            }
         }
 
     })
 })
+router.get('/vote/:pollID/:optionID', function(req, res){
+    var pollID = String(req.params.pollID);
+    var optionID = String(req.params.optionID);
+    Poll.registerVote(pollID, optionID);
+    res.redirect('/polls/view/' +pollID);
+})
 router.get('/new', function(req,res){
     //If the user navigates to /new and they are not currently authenticated it will inform them that they need to be logged in to create polls. 
     //Otherwise it will give them the form that they can fill out to create a poll. 
-    if(req.isAuthenticated){
+    if(req.isAuthenticated()){
         res.render('../views/createpoll.ejs');
     }
     else{
         res.send("You must be logged in to create polls");
     }
 });
+router.get('/delete/:id', function(req,res){
+    //If the user is both logged in and the owner of the poll this will allow them to delte it.
+    var pollID = req.params.id;
+    if(req.isAuthenticated()){
+        Poll.findById(pollID
+        , function(err, result){
+            if(err || !result){
+                res.send("Invalid Option");
+            }
+            else if(result.ownerID === String(req.user._id)){
+                Poll.findByIdAndRemove(pollID,{}, function(err, result){
+                    if(err, !res){
+                        res.send("Failed to delete");
+                    }
+                    else{
+                        res.send("Poll Removed");
+                    }
+                })
+            }
+            else{
+                res.send("could not delete poll");
+            }
+        }
+    )
+    }
+    else{
+        res.send("You must be logged in to modify your polls");
+    }
+})
+router.post('/addOption/:id', function(req, res){
+    if(req.isAuthenticated()){
+        let pollID = req.params.id;
+        let optionName = req.body.optionName;
+        Poll.addOption(pollID, optionName);
+        res.redirect('/polls/view/' + pollID);
+    }
+    else{
+        res.send("You must be logged in to add options");
+    }
+})
 router.post('/new', function(req, res){
     //This will only create a new poll provided the user is logged in, 
     //Otherwise it will tell them that they must be logged in to create polls. 

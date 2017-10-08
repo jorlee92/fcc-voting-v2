@@ -41,7 +41,7 @@ PollSchema.statics.registerVote = function(id, OptionID){
         })
 }
 PollSchema.statics.addOption = function(pollID, name){
-    //Given a poll ID this will add an additional votinjg option. 
+    //Given a poll ID this will add an additional voting option. 
     Poll.findOneAndUpdate(
         {"_id": pollID},
         {$push:{
