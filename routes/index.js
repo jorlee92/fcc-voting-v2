@@ -3,12 +3,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  if(req.isAuthenticated()){
-    res.send(req.user);
-  }
-  else{
+
   res.render('index', { title: 'Express' });
-  }
+  
 });
 
 

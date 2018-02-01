@@ -16,9 +16,10 @@ var register = require('./routes/register');
 var login = require('./routes/login');
 var polls = require('./routes/polls');
 var profile = require('./routes/profile');
+require('dotenv').config()
 
 //MongoDB setup
-var mongoUri = "";
+var mongoUri = process.env.MONGO_URI;
 mongoose.connect(mongoUri, {
   useMongoClient: true
 });
@@ -45,7 +46,7 @@ passport.deserializeUser(function(id, done) {
 
 // TODO: Remove, this app doesnt really use Jade, but that was the default with the express generator.
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
