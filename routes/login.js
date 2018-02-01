@@ -38,7 +38,7 @@ router.post('/', passport.authenticate('local'),
 
 router.get('/', function(req, res){
     if(req.isAuthenticated()){
-        res.send("You are logged in!");
+        res.redirect('/profile')
       }
       else{
     res.render('../views/login.ejs');

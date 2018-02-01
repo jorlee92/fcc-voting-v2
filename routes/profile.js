@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Poll = require('../models/Polls.js');
 router.get('/', function(req, res){
-    //If the user is logged in show them their profile, otherwise redirect them to the index. 
+    //If the user is logged in show them their profile, otherwise redirect them to the login page. 
     if(req.isAuthenticated){
         Poll.listByUserID(req.user["_id"],
             function(err, results){
@@ -21,7 +21,9 @@ router.get('/', function(req, res){
         )
     }
     else{
-        res.redirect('/');
+        res.redirect('/login', {
+            message: "You must be logged in to view your profile"
+        });
     }
 })
 

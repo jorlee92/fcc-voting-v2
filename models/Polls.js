@@ -25,7 +25,8 @@ var PollSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    options: [OptionSchema]
+    options: [OptionSchema],
+    pollImage: String, 
 });
 PollSchema.statics.registerVote = function(id, OptionID){
     //Finds a poll that has an option with matching IDs and increments the value by 1. 

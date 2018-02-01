@@ -88,6 +88,7 @@ router.post('/new', function(req, res){
         if(req.body.pollname && req.body.polloptions){
             //If both the name and options field are filled in create a poll.
             var pollName = String(req.body.pollname);
+            var pollImage = req.body.pollimage;
             var options = String(req.body.polloptions).split(",");
             var optArray = [];
             for( let i = 0 ; i < options.length; i++){
@@ -97,7 +98,8 @@ router.post('/new', function(req, res){
 				ownerID: req.user["_id"],
 				ownerEmail: req.user.email,
 				name: pollName, 
-				options: optArray
+                options: optArray,
+                pollImage: pollImage,
 			  }
             Poll.create(pollObj, function(err, poll){
                 if(err){
