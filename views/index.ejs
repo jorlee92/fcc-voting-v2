@@ -6,7 +6,7 @@
             <div class="row">
             <% polls.forEach(function(poll){  %>
                 <div class="card m-1 col-md-3">
-                <img src="<%= poll.pollImage %>" alt="Image belonging to a poll" class="card-img-top">
+                <img src="<%= poll.pollImage %>" alt="Image belonging to a poll" class="card-img-top homepage-preview-img">
                 <h3 class="card-text">
                   <a href="/polls/view/<%= poll._id %>"><%= poll.name %></a>
                 </h3>

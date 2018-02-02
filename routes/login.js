@@ -32,16 +32,18 @@ router.post('/', passport.authenticate('local'),
     function(req, res) {
       // If this function gets called, authentication was successful.
       // `req.user` contains the authenticated user.
-      console.log("User would see that the login worked")
-      res.send("Logged in!");
+      console.log("User would see that the login worked");
+      req.flash('flash', 'Logged in!');
+      res.redirect('/profile');
     });
 
 router.get('/', function(req, res){
     if(req.isAuthenticated()){
+        req.flash('flash', "You are already logged in!");
         res.redirect('/profile')
       }
       else{
-    res.render('../views/login.ejs');
+    res.render('../views/login.ejs', {  flash: req.flash('flash')  });
     }
 })
 

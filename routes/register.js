@@ -4,7 +4,13 @@ var User = require('../models/Users.js');
 
 router.get('/', function(req,res){
     //loads the registration form when somebody naviates to /register
+    if(req.isAuthenticated()){
+        req.flash('flash', "You are already logged in");
+        res.redirect('/profile/')
+    }
+    else{
     res.render('../views/register.ejs');
+    }
 })
 router.post('/', function(req, res, next){
     if( req.body.email && req.body.password && req.body.comfirmPassword){

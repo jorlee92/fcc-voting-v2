@@ -11,7 +11,8 @@ router.get('/view/:id', function(req, res){
     var pollID = req.params.id;
     Poll.findOne({"_id": pollID}, function(err, result){
         if(err || !result){
-            res.send("Could not find Poll!")
+            req.flash('flash', "Could Not find Poll");
+            res.redirect('/');
         }
         else{
             if(req.isAuthenticated()){
@@ -29,7 +30,7 @@ router.get('/vote/:pollID/:optionID', function(req, res){
     var pollID = String(req.params.pollID);
     var optionID = String(req.params.optionID);
     Poll.registerVote(pollID, optionID);
-    res.redirect('/polls/view/' +pollID);
+    res.redirect('/polls/view/' + pollID);
 })
 router.get('/new', function(req,res){
     //If the user navigates to /new and they are not currently authenticated it will inform them that they need to be logged in to create polls. 
@@ -38,7 +39,8 @@ router.get('/new', function(req,res){
         res.render('../views/createpoll.ejs');
     }
     else{
-        res.send("You must be logged in to create polls");
+        req.flash('flash', "You must be logged in to create polls");
+        res.redirect('/login')
     }
 });
 router.get('/delete/:id', function(req,res){
@@ -48,15 +50,18 @@ router.get('/delete/:id', function(req,res){
         Poll.findById(pollID
         , function(err, result){
             if(err || !result){
-                res.send("Invalid Option");
+                req.flash('flash', "Could Not delete poll");
+                res.redirect('/profile')
             }
             else if(result.ownerID === String(req.user._id)){
                 Poll.findByIdAndRemove(pollID,{}, function(err, result){
-                    if(err, !res){
-                        res.send("Failed to delete");
+                    if(err){
+                        req.flash('flash', "Could Not delete poll");
+                        res.redirect('/profile')
                     }
                     else{
-                        res.send("Poll Removed");
+                        req.flash('flash', "Poll Removed");
+                        res.redirect('/profile')
                     }
                 })
             }
@@ -67,7 +72,8 @@ router.get('/delete/:id', function(req,res){
     )
     }
     else{
-        res.send("You must be logged in to modify your polls");
+        req.flash('flash', "You must be logged in to perform this action");
+        res.redirect('/')
     }
 })
 router.post('/addOption/:id', function(req, res){
@@ -78,13 +84,15 @@ router.post('/addOption/:id', function(req, res){
         res.redirect('/polls/view/' + pollID);
     }
     else{
-        res.send("You must be logged in to add options");
+        req.flash('flash', "You must be logged in to perform this action");
+        let pollID = req.params.id;
+        res.redirect('/polls/view/' + pollID);
     }
 })
 router.post('/new', function(req, res){
     //This will only create a new poll provided the user is logged in, 
     //Otherwise it will tell them that they must be logged in to create polls. 
-    if(req.isAuthenticated){
+    if(req.isAuthenticated()){
         if(req.body.pollname && req.body.polloptions){
             //If both the name and options field are filled in create a poll.
             var pollName = String(req.body.pollname);
@@ -104,20 +112,25 @@ router.post('/new', function(req, res){
             Poll.create(pollObj, function(err, poll){
                 if(err){
                     res.send("Failed to create poll")
+                    req.flash('flash', "Failed to create poll");
+                    res.redirect('/')
                 }
                 else{
-                    res.send("poll created");
+                    req.flash('flash', "Poll Created");
+                    res.redirect('/profile/')
                 }
             })
         }
         else{
             //if either the name or options are false, or at least evaluate to false tell the user their input is invalid. 
-            res.send("invalid input");
+            req.flash('flash', "Invalid form input");
+            res.redirect('/polls/new');
         }
     }
     else{
         //If the user is not logged in inform them that they need to be logged in to create polls.
-        res.send("You must be logged in to create polls!");
+        req.flash('flash', "You must be logged in to create polls");
+        res.redirect(401, '/login');
     }
 })
 
